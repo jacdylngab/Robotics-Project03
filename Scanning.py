@@ -33,19 +33,15 @@ def real_data(scan_data):
     distances = [dist[1] for dist in scan_data]
     
     mean = statistics.mean(distances)
-    print(f"mean: {mean}")
     standard_deviation = statistics.stdev(distances)
-    print(f"standard_deviation: {standard_deviation}")
 
     threshold = 1 # This helps identify the severity of what is considered an outlier
     lower_bound = mean - (threshold * standard_deviation)
     upper_bound = mean + (threshold * standard_deviation)
 
     outliers = [x for x in distances if x < lower_bound or x > upper_bound]
-    print(f"outliers: {outliers}")
     
     real_data = [data for data in scan_data if data[1] not in outliers]
-    print(f"real_data: {real_data}")
 
     return real_data
 
@@ -78,7 +74,6 @@ def scan():
                     sleep(0.1) # Small delay for stability
 
             first_pass = False
-            print(f"scan_data: {scan_data}")
             filtered_real_data = real_data(scan_data)
             return filtered_real_data
             
@@ -88,5 +83,7 @@ def scan():
         pca.deinit()
         sensor.close()
         filtered_real_data = real_data(scan_data)
+        if not filtered_real_data:
+            return "No obstacles found"
         return filtered_real_data
         

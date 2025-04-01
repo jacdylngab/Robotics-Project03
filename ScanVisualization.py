@@ -19,8 +19,13 @@ def plot_scan(data):
     plt.scatter(x_values, y_values, c='r', label="Scanned Points")
     plt.axhline(0, color='k', linewidth=1)
     plt.axvline(0, color='k', linewidth=1)
-    #plt.xlim(-200, 200)
-    #plt.ylim(-200, 200)
+    plt.xlim(-100, 100)
+    plt.ylim(0, 100)
+
+    # Set ticks every 1 unit
+    plt.xticks(range(-100, 101, 10))
+    plt.yticks(range(0, 101, 10))
+
     plt.xlabel("X (cm)")
     plt.ylabel("Y (cm)")
     plt.title("Ultrasonic Range Sensor Mapping")

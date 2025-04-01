@@ -42,4 +42,7 @@ plt.title("Potential Field for Robot Navigation")
 plt.xlabel("X")
 plt.ylabel("Y")
 plt.grid(False)
+plot_path = "heatMap.png"
+plt.savefig(plot_path)
+print(f"Plot saved as {plot_path}")
 plt.show()
