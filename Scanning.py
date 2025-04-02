@@ -31,6 +31,9 @@ def get_distance(samples):
 
 def real_data(scan_data):
     distances = [dist[1] for dist in scan_data]
+
+    if not distances:
+        return []
     
     mean = statistics.mean(distances)
     standard_deviation = statistics.stdev(distances)
@@ -59,7 +62,7 @@ def scan():
             # Start at current position
             servo0.angle = start_angle
             distance = get_distance(10)
-            if distance < 40: #Range limit
+            if distance < 50: #Range limit
                 scan_data.append((start_angle, distance))
             print(f"{start_angle} degrees: {distance:.2f} cm")
             sleep(0.1) # Small delay for stability
@@ -68,7 +71,7 @@ def scan():
                 for angle in angle_list:
                     servo0.angle = angle
                     distance = get_distance(10)
-                    if distance < 40: # Range limit
+                    if distance < 50: # Range limit
                         scan_data.append((angle, distance))
                     print(f"{angle} degrees: {distance:.2f} cm")
                     sleep(0.1) # Small delay for stability
@@ -83,7 +86,5 @@ def scan():
         pca.deinit()
         sensor.close()
         filtered_real_data = real_data(scan_data)
-        if not filtered_real_data:
-            return "No obstacles found"
         return filtered_real_data
         
