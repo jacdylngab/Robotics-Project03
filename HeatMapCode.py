@@ -22,9 +22,20 @@ def scanned_points(scanned_data, goal, width, height):
         coordinates = (y, x)
         if coordinates != goal and (0 <= y < width and 0 <= x < height):
             obstacles.append(coordinates)
+            #obstacles.append((coordinates, angle))
 
-    return obstacles 
+    return obstacles
+'''
+def robot_to_lab(data):
+    coordinates, angle = data
+    y, x = coordinates
+    theta = math.radians(angle)
 
+    x2 = x*math.cos(theta) + y*math.sin(theta)
+    y2 = -x*math.sin(theta) + y*math.cos(theta)
+
+    return (y2, x2)
+'''
 def add_attractive_potential(grid, goal, strength=100):
     for y in range(grid.shape[0]):
         for x in range(grid.shape[1]):
@@ -59,9 +70,12 @@ def generate_heatmap():
         print("No obstacles found")
         return
 
+    #obstacles_lab_coordinates = [robot_to_lab(data) for data in obstacles]
+    #print(f"Obstacles_lab_coordinates: {obstacles_lab_coordinates}")
     # Apply potentials
     heatmap = add_attractive_potential(heatmap, goal)
     heatmap = add_repulsive_potentials(heatmap, obstacles)
+    #heatmap = add_repulsive_potentials(heatmap, obstacles_lab_coordinates)
 
     # Plot the heatmap
     plt.figure(figsize=(8, 6))
@@ -69,7 +83,9 @@ def generate_heatmap():
     plt.colorbar(label='Potential')
     plt.scatter(goal[0], goal[1], c='blue', label='Goal')
     for oy, ox in obstacles:
+    #for oy, ox in obstacles_lab_coordinates:
         plt.scatter(ox, oy, c='black', label='Obstacle' if (oy, ox) == obstacles[0] else "")
+        #plt.scatter(ox, oy, c='black', label='Obstacle' if (oy, ox) == obstacles_lab_coordinates[0] else "")
     plt.legend()
     plt.title("Potential Field for Robot Navigation")
     plt.xlabel("X")
