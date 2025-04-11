@@ -11,7 +11,7 @@ enable2 = PWMOutputDevice(24, frequency=1000)
 
 radius = 3
 d = 15
-angle = math.pi / 4
+#angle = math.pi / 2
 
 
 def setup():
@@ -59,15 +59,14 @@ def destroy():
     p2.off()
     motor1.stop()
     motor2.stop()
-
 '''
 if __name__ == "__main__":
     setup()
-    motor(50)
+    #motor(50)
     #motor(100)
     #print("Left tank turn 45 degrees")
-    #turn(duty_cycle_left=0, duty_cycle_right=0.5, direction=angle+0.4)
-    #print("Right tank turn 45 degrees")
-    #turn(duty_cycle_left=0.5, duty_cycle_right=0, direction=-angle-0.45)
+    #turn(duty_cycle_left=0, duty_cycle_right=0.5, direction=angle+1.4)
+    print("Right tank turn 45 degrees")
+    turn(duty_cycle_left=0.5, duty_cycle_right=0, direction=-angle-0.9)
     destroy()
 '''

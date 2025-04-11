@@ -32,7 +32,7 @@ def add_attractive_potential(grid, goal, strength=100):
             grid[y, x] -= strength / (dist + 1)  # Avoid division by zero
     return grid
 
-def add_repulsive_potentials(grid, obstacles, strength=200, radius=6):
+def add_repulsive_potentials(grid, obstacles, strength=200, radius=200):
     for oy, ox in obstacles:
         for y in range(grid.shape[0]):
             for x in range(grid.shape[1]):
