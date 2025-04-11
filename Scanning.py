@@ -65,7 +65,7 @@ def scan():
             if distance < 50: #Range limit
                 scan_data.append((start_angle, distance))
             print(f"{start_angle} degrees: {distance:.2f} cm")
-            sleep(0.1) # Small delay for stability
+            #sleep(0.05) # Small delay for stability
 
             for angle_list in [anticlockwise_angles, reversed(anticlockwise_angles[:-1]), clockwise_angles, reversed(clockwise_angles[:-1])]:
                 for angle in angle_list:
@@ -74,7 +74,7 @@ def scan():
                     if distance < 50: # Range limit
                         scan_data.append((angle, distance))
                     print(f"{angle} degrees: {distance:.2f} cm")
-                    sleep(0.1) # Small delay for stability
+                    #sleep(0.05) # Small delay for stability
 
             first_pass = False
             filtered_real_data = real_data(scan_data)

@@ -36,12 +36,13 @@ def motor(speed):
     motor1.forward()
     motor2.forward()
     p1.value = speed / 100  # Convert Speed (0-100) to 0-1 range
-    p2.value = (speed / 100) - 0.012
+    p2.value = (speed / 100)
 
     sleep(3)
     p1.off()
     p2.off()
 
+    '''
     motor1.backward()
     motor2.backward()
     p1.value = (speed / 100) - 0.012  # Convert Speed (0-100) to 0-1 range
@@ -50,6 +51,7 @@ def motor(speed):
     sleep(3)
     p1.off()
     p2.off()
+    '''
 
 
 def destroy():
@@ -58,7 +60,7 @@ def destroy():
     motor1.stop()
     motor2.stop()
 
-
+'''
 if __name__ == "__main__":
     setup()
     motor(50)
@@ -68,3 +70,4 @@ if __name__ == "__main__":
     #print("Right tank turn 45 degrees")
     #turn(duty_cycle_left=0.5, duty_cycle_right=0, direction=-angle-0.45)
     destroy()
+'''
