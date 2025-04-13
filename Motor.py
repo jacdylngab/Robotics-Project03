@@ -6,8 +6,8 @@ import math
 motor1 = Motor(forward=27, backward=17)
 motor2 = Motor(forward=23, backward=18)
 
-enable1 = PWMOutputDevice(22, frequency=1000)
-enable2 = PWMOutputDevice(24, frequency=1000)
+enable1 = PWMOutputDevice(24, frequency=1000)
+enable2 = PWMOutputDevice(22, frequency=1000)
 
 radius = 3
 d = 15
@@ -18,6 +18,26 @@ def setup():
     global p1, p2
     p1 = enable1
     p2 = enable2
+
+def get_rotation_direction(current_angle, target_angle):
+    # Normalize both angles to [0, 360]
+    current = current_angle % (2 * math.pi)
+    target = target_angle % (2 * math.pi)
+
+    # Find the smallest angle difference
+    delta = (target - current) % (2 * math.pi)
+
+    # Decide turn direction
+    if delta == 0:
+        return 0 # No turn needed
+    elif delta <= math.pi: 
+        return -1 # Turn left
+    else:
+        return 1 # Turn right
+
+def get_turn_amount(current_angle, target_angle):
+    delta = (target_angle - current_angle) % (2 * math.pi)
+    return delta if delta <= math.pi else (2 * math.pi) - delta
 
 def turn(duty_cycle_left, duty_cycle_right, direction):
     motor1.forward()
@@ -30,6 +50,24 @@ def turn(duty_cycle_left, duty_cycle_right, direction):
     sleep(dt)
     p1.off()
     p2.off()
+
+# This function identifies whether to turn left or right based on the angle
+def smart_turn(current_angle, target_angle):
+    direction = get_rotation_direction(current_angle, target_angle)
+    angle_to_turn = get_turn_amount(current_angle, target_angle)
+    print(f"direction: {direction}")
+
+    if direction == 0:
+        print("Already facing the target angle.")
+        return
+
+    # Set duty cycles based on direction
+    if direction == 1: # Turn right
+        print("Turning right...")
+        turn(duty_cycle_left=0.5, duty_cycle_right=0, direction=-angle_to_turn-0.9)
+    else: # turn left
+        print("Turning left...")
+        turn(duty_cycle_left=0, duty_cycle_right=0.5, direction=angle_to_turn+1.4)
 
 
 def motor(speed):
@@ -65,8 +103,10 @@ if __name__ == "__main__":
     #motor(50)
     #motor(100)
     #print("Left tank turn 45 degrees")
-    #turn(duty_cycle_left=0, duty_cycle_right=0.5, direction=angle+1.4)
-    print("Right tank turn 45 degrees")
-    turn(duty_cycle_left=0.5, duty_cycle_right=0, direction=-angle-0.9)
+    #turn(duty_cycle_left=0, duty_cycle_right=0.5, direction=(math.pi/2)+1)
+    #print("Right tank turn 45 degrees")
+    #turn(duty_cycle_left=0.5, duty_cycle_right=0, direction=-(math.pi/4)-0.9)
+    smart_turn(math.pi/3, math.pi/4)
+    
     destroy()
 '''
