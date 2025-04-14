@@ -6,15 +6,6 @@ import math
 #robot_heading = 0 # degrees
 ############################################
 
-# Function to move the robot forward
-def move_forward(distance, robot_heading):
-    # turning left
-    turn(duty_cycle_left=0, duty_cycle_right=0.5, direction=robot_heading+1.4)
-    # turning right
-    turn(duty_cycle_left=0.5, duty_cycle_right=0, direction=-robot_heading-0.9)
-    # moving forward
-    motor(distance)
-
 # Function to change the coordinates from robot frame to lab frame
 def robot_to_lab(point, angle):
     x_local, y_local = point
@@ -25,6 +16,15 @@ def robot_to_lab(point, angle):
     y2 = -x_local*math.sin(theta) + y_local*math.cos(theta)
 
     return (x2, y2)
+
+# Function to move the robot forward
+def move_forward(distance, robot_curr_angle, robot_heading):
+    #TODO:MAKE SURE THE ANGLE IS IN RADIANS WHEN YOU ARE TESTING!
+    # Rotate to the appropriate angle
+    smart_turn(robot_curr_angle, robot_heading)
+    # moving forward
+    motor(distance)
+
 
 def navigation():
     # Step 1: Have the robot pointing in the postive x-axis 

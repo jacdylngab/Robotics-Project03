@@ -81,4 +81,4 @@ def generate_heatmap():
     print(f"Plot saved as {plot_path}")
     plt.show()
 
-    #return obstacles_data
+    return obstacles_data
