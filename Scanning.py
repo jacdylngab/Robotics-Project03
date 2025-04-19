@@ -48,6 +48,10 @@ def real_data(scan_data):
 
     return real_data
 
+def destroy_scan():
+    servo0.angle = None
+    pca.deinit()
+    sensor.close()
 
 def scan():
     scan_data = [] # Store scanned points
@@ -57,34 +61,24 @@ def scan():
     clockwise_angles = [i for i in range(start_angle, -1, -5)]
     first_pass = True
 
-    try:
-        while first_pass:
-            # Start at current position
-            servo0.angle = start_angle
-            distance = get_distance(10)
-            if distance < 50: #Range limit
-                scan_data.append((start_angle, distance))
-            print(f"{start_angle} degrees: {distance:.2f} cm")
-            #sleep(0.05) # Small delay for stability
+    while first_pass:
+        # Start at current position
+        servo0.angle = start_angle
+        distance = get_distance(10)
+        if distance < 50: #Range limit
+            scan_data.append((start_angle, distance))
+        print(f"{start_angle} degrees: {distance:.2f} cm")
+        #sleep(0.05) # Small delay for stability
 
-            for angle_list in [anticlockwise_angles, reversed(anticlockwise_angles[:-1]), clockwise_angles, reversed(clockwise_angles[:-1])]:
-                for angle in angle_list:
-                    servo0.angle = angle
-                    distance = get_distance(10)
-                    if distance < 50: # Range limit
-                        scan_data.append((angle, distance))
-                    print(f"{angle} degrees: {distance:.2f} cm")
-                    #sleep(0.05) # Small delay for stability
+        for angle_list in [anticlockwise_angles, reversed(anticlockwise_angles[:-1]), clockwise_angles, reversed(clockwise_angles[:-1])]:
+            for angle in angle_list:
+                servo0.angle = angle
+                distance = get_distance(10)
+                if distance < 50: # Range limit
+                    scan_data.append((angle, distance))
+                print(f"{angle} degrees: {distance:.2f} cm")
+                #sleep(0.05) # Small delay for stability
 
-            first_pass = False
-            filtered_real_data = real_data(scan_data)
-            return filtered_real_data
-            
-    except KeyboardInterrupt:  # Press ctrl-c to end the program
-        print("Ending program")
-        servo0.angle = None
-        pca.deinit()
-        sensor.close()
+        first_pass = False
         filtered_real_data = real_data(scan_data)
         return filtered_real_data
-        

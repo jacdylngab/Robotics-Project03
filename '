@@ -97,11 +97,9 @@ def destroy():
     p2.off()
     motor1.stop()
     motor2.stop()
-
-'''
 if __name__ == "__main__":
     setup()
-    motor(45)
+    motor(50)
     #motor(100)
     #print("Left tank turn 45 degrees")
     #turn(duty_cycle_left=0, duty_cycle_right=0.5, direction=(math.pi/2)+1)
@@ -110,4 +108,3 @@ if __name__ == "__main__":
     #smart_turn(math.pi/3, math.pi/4)
     
     destroy()
-'''
